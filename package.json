@@ -4,7 +4,8 @@
   "description": "A modified ERC-721 contract that represents home ownership.",
   "scripts": {
     "compile": "truffle compile",
-    "migrate": "truffle migrate",
+    "migrate:development": "truffle migrate --network development",
+    "migrate:test": "truffle migrate --network test",
     "test": "truffle test"
   },
   "repository": {
