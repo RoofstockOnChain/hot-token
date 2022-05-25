@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/RoofstockOnChain/hot-token#readme",
   "dependencies": {
+    "@openzeppelin/contracts-upgradeable": "^4.6.0",
     "truffle": "^5.5.15"
   }
 }
