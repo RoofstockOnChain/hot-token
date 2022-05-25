@@ -1,0 +1,29 @@
+{
+  "name": "hot-token",
+  "version": "1.0.0",
+  "description": "A modified ERC-721 contract that represents home ownership.",
+  "scripts": {
+    "compile": "truffle compile",
+    "migrate": "truffle migrate",
+    "test": "truffle test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RoofstockOnChain/hot-token.git"
+  },
+  "keywords": [
+    "roofstock",
+    "truffle",
+    "smart-contract",
+    "ERC-721"
+  ],
+  "author": "Roofstock onChain",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RoofstockOnChain/hot-token/issues"
+  },
+  "homepage": "https://github.com/RoofstockOnChain/hot-token#readme",
+  "dependencies": {
+    "truffle": "^5.5.15"
+  }
+}
