@@ -5,8 +5,11 @@
   "scripts": {
     "compile": "truffle compile",
     "migrate:development": "truffle migrate --network development",
-    "migrate:test": "truffle migrate --network test",
-    "test": "truffle test"
+    "migrate:rinkeby": "truffle migrate --network rinkeby",
+    "migrate:dashboard": "truffle migrate --network dashboard",
+    "test": "truffle test",
+    "dashboard": "truffle dashboard",
+    "verify:home-ownership-token:rinkeby": "truffle run verify HomeOwnershipToken --network rinkeby"
   },
   "repository": {
     "type": "git",
@@ -26,6 +29,10 @@
   "homepage": "https://github.com/RoofstockOnChain/hot-token#readme",
   "dependencies": {
     "@openzeppelin/contracts-upgradeable": "^4.6.0",
-    "truffle": "^5.5.15"
+    "@openzeppelin/truffle-upgrades": "^1.15.0",
+    "@truffle/hdwallet-provider": "^2.0.8",
+    "dotenv": "^16.0.1",
+    "truffle": "^5.5.15",
+    "truffle-plugin-verify": "^0.5.25"
   }
 }
