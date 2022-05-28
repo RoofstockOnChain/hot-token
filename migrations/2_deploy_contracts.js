@@ -3,16 +3,14 @@ const { deployProxy, upgradeProxy } = require("@openzeppelin/truffle-upgrades");
 const HomeOwnershipToken = artifacts.require("HomeOwnershipToken");
 
 module.exports = async function (deployer) {
-  try {
+  const upgrade = false;
+  if (upgrade) {
     var instance = await HomeOwnershipToken.deployed();
-    var upgraded = await upgradeProxy(instance.address, HomeOwnershipToken, {
+    await upgradeProxy(instance.address, HomeOwnershipToken, {
       deployer,
     });
-    console.log("Upgraded", upgraded.address);
-  } catch {
-    var instance = await deployProxy(HomeOwnershipToken, [], { deployer });
-    console.log("Deployed", instance.address);
+  } else {
+    await deployProxy(HomeOwnershipToken, [], { deployer });
+    deployer.deploy(HomeOwnershipToken);
   }
-  await deployProxy(HomeOwnershipToken);
-  deployer.deploy(HomeOwnershipToken);
 };

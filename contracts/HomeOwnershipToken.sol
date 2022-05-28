@@ -9,6 +9,7 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721BurnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/StringsUpgradeable.sol";
 
 /// @custom:security-contact security@roofstockonchain.com
 contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, ERC721URIStorageUpgradeable, PausableUpgradeable, AccessControlUpgradeable, ERC721BurnableUpgradeable {
@@ -48,11 +49,11 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
         _unpause();
     }
 
-    function safeMint(address to, string memory uri) public onlyRole(MINTER_ROLE) {
+    function safeMint(address to) public onlyRole(MINTER_ROLE) {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
-        _setTokenURI(tokenId, uri);
+        _setTokenURI(tokenId, StringsUpgradeable.toString(tokenId));
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
