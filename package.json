@@ -6,6 +6,7 @@
     "compile": "truffle compile",
     "migrate:development": "truffle migrate --network development",
     "migrate:rinkeby": "truffle migrate --network rinkeby",
+    "migrate:rinkeby:reset": "truffle migrate --network rinkeby --reset",
     "migrate:dashboard": "truffle migrate --network dashboard",
     "test": "truffle test",
     "dashboard": "truffle dashboard",
