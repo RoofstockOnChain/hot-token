@@ -10,7 +10,7 @@
     "migrate:dashboard": "truffle migrate --network dashboard",
     "test": "truffle test",
     "dashboard": "truffle dashboard",
-    "verify:home-ownership-token:rinkeby": "truffle run verify HomeOwnershipToken --network rinkeby"
+    "verify:roofstock-hot-genesis:rinkeby": "truffle run verify RoofstockHotGenesis --network rinkeby"
   },
   "repository": {
     "type": "git",
