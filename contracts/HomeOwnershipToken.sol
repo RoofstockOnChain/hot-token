@@ -9,6 +9,8 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721Burnab
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
+error NotSupported();
+
 contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, PausableUpgradeable, AccessControlUpgradeable, ERC721BurnableUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
@@ -72,19 +74,26 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
     }
 
     function approve(address to, uint256 tokenId) public virtual override(ERC721Upgradeable, IERC721Upgradeable) {
-        require(true, "HOT: approve not supported");
+        to;
+        tokenId;
+        revert NotSupported();
     }
 
     function getApproved(uint256 tokenId) public view virtual override(ERC721Upgradeable, IERC721Upgradeable) returns (address) {
-        require(true, "HOT: getApproved not supported");
+        tokenId;
+        revert NotSupported();
     }
 
     function isApprovedForAll(address owner, address operator) public view virtual override(ERC721Upgradeable, IERC721Upgradeable) returns (bool) {
-        require(true, "HOT: isApprovedForAll not supported");
+        owner;
+        operator;
+        revert NotSupported();
     }
 
     function setApprovalForAll(address operator, bool approved) public virtual override(ERC721Upgradeable, IERC721Upgradeable) {
-        require(true, "HOT: setApprovalForAll not supported");
+        operator;
+        approved;
+        revert NotSupported();
     }
 
     // The following functions are overrides required by Solidity.
