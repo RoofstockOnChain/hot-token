@@ -7,15 +7,15 @@ import "@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
+import "./ERC721Burnable.sol";
 
 error NotSupported();
 
-contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, PausableUpgradeable, AccessControlUpgradeable {
+contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, PausableUpgradeable, AccessControlUpgradeable, ERC721Burnable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
     bytes32 public constant TRANSFERRER_ROLE = keccak256("TRANSFERRER_ROLE");
     CountersUpgradeable.Counter private _tokenIdCounter;
 
@@ -32,11 +32,11 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
         __ERC721Enumerable_init();
         __Pausable_init();
         __AccessControl_init();
+        __Burnable_init();
 
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(PAUSER_ROLE, msg.sender);
         _grantRole(MINTER_ROLE, msg.sender);
-        _grantRole(BURNER_ROLE, msg.sender);
         _grantRole(TRANSFERRER_ROLE, msg.sender);
     }
 
@@ -110,16 +110,6 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
         _safeTransfer(from, to, tokenId, _data);
     }
 
-    function burn(uint256 tokenId)
-        public
-        virtual
-        onlyRole(BURNER_ROLE)
-    {
-        //solhint-disable-next-line max-line-length
-        require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721Burnable: caller is not owner nor approved");
-        _burn(tokenId);
-    }
-
     function approve(address to, uint256 tokenId) public virtual override(ERC721Upgradeable, IERC721Upgradeable) {
         to;
         tokenId;
@@ -157,7 +147,7 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable)
+        override(ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721Burnable)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
