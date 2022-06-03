@@ -34,6 +34,8 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
         _grantRole(TRANSFERRER_ROLE, msg.sender);
     }
 
+    // The following functions allow you to get and set the Base URI
+
     function _baseURI() internal view virtual override returns (string memory) {
         return _baseTokenURI;
     }
@@ -42,13 +44,7 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
         _baseTokenURI = baseTokenURI;
     }
 
-    function _beforeTokenTransfer(address from, address to, uint256 tokenId)
-        internal
-        whenNotPaused
-        override(ERC721Upgradeable, ERC721EnumerableUpgradeable)
-    {
-        super._beforeTokenTransfer(from, to, tokenId);
-    }
+    // The following functions make it so only Transferrers can do transfers
 
     function transferFrom(
         address from,
@@ -90,6 +86,8 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
         _safeTransfer(from, to, tokenId, _data);
     }
 
+    // The following functions make approval functions not supported
+
     function approve(address to, uint256 tokenId) public virtual override(ERC721Upgradeable, IERC721Upgradeable) {
         to;
         tokenId;
@@ -114,6 +112,14 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
     }
 
     // The following functions are overrides required by Solidity.
+
+    function _beforeTokenTransfer(address from, address to, uint256 tokenId)
+        internal
+        whenNotPaused
+        override(ERC721Upgradeable, ERC721EnumerableUpgradeable)
+    {
+        super._beforeTokenTransfer(from, to, tokenId);
+    }
 
     function supportsInterface(bytes4 interfaceId)
         public
