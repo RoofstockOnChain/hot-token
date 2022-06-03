@@ -5,7 +5,7 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 
-contract ERC721Burnable is Initializable, ERC721Upgradeable, AccessControlUpgradeable {
+abstract contract ERC721Burnable is Initializable, ERC721Upgradeable, AccessControlUpgradeable {
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
 
     function __Burnable_init() internal onlyInitializing {
