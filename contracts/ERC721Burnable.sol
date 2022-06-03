@@ -20,6 +20,8 @@ abstract contract ERC721Burnable is Initializable, ERC721Upgradeable, AccessCont
         _burn(tokenId);
     }
 
+    // The following functions are overrides required by Solidity.
+
     function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721Upgradeable, AccessControlUpgradeable) returns (bool) {
         return super.supportsInterface(interfaceId);
     }

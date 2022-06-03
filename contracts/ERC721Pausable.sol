@@ -22,6 +22,8 @@ abstract contract ERC721Pausable is Initializable, AccessControlUpgradeable, Pau
         _unpause();
     }
 
+    // The following functions are overrides required by Solidity.
+
     function supportsInterface(bytes4 interfaceId) public view virtual override(AccessControlUpgradeable) returns (bool) {
         return super.supportsInterface(interfaceId);
     }

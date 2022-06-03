@@ -5,18 +5,14 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import "./ERC721Burnable.sol";
+import "./ERC721Mintable.sol";
 import "./ERC721Pausable.sol";
 
 error NotSupported();
 
-contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721Pausable, ERC721Burnable {
-    using CountersUpgradeable for CountersUpgradeable.Counter;
-
-    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
+contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721Mintable, ERC721Pausable, ERC721Burnable {
     bytes32 public constant TRANSFERRER_ROLE = keccak256("TRANSFERRER_ROLE");
-    CountersUpgradeable.Counter private _tokenIdCounter;
 
     string private _baseTokenURI;
 
@@ -30,11 +26,11 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
         __ERC721_init(name, symbol);
         __ERC721Enumerable_init();
         __AccessControl_init();
+        __ERC721Mintable_init();
         __ERC721Pausable_init();
         __ERC721Burnable_init();
 
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(MINTER_ROLE, msg.sender);
         _grantRole(TRANSFERRER_ROLE, msg.sender);
     }
 
@@ -44,12 +40,6 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
 
     function setBaseURI(string memory baseTokenURI) public onlyRole(DEFAULT_ADMIN_ROLE) {
         _baseTokenURI = baseTokenURI;
-    }
-
-    function safeMint(address to) public onlyRole(MINTER_ROLE) {
-        uint256 tokenId = _tokenIdCounter.current();
-        _tokenIdCounter.increment();
-        _safeMint(to, tokenId);
     }
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
@@ -137,7 +127,7 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721Pausable, ERC721Burnable)
+        override(ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721Mintable, ERC721Pausable, ERC721Burnable)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
