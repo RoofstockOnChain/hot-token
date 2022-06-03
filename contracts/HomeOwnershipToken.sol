@@ -66,9 +66,48 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
         internal
         whenNotPaused
         override(ERC721Upgradeable, ERC721EnumerableUpgradeable)
-        onlyRole(TRANSFERRER_ROLE)
     {
         super._beforeTokenTransfer(from, to, tokenId);
+    }
+
+    function transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    )
+        public
+        virtual
+        override(ERC721Upgradeable, IERC721Upgradeable)
+        onlyRole(TRANSFERRER_ROLE)
+    {
+        _transfer(from, to, tokenId);
+    }
+
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    )
+        public
+        virtual
+        override(ERC721Upgradeable, IERC721Upgradeable)
+        onlyRole(TRANSFERRER_ROLE)
+    {
+        safeTransferFrom(from, to, tokenId, "");
+    }
+
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId,
+        bytes memory _data
+    )
+        public
+        virtual
+        override(ERC721Upgradeable, IERC721Upgradeable)
+        onlyRole(TRANSFERRER_ROLE)
+    {
+        _safeTransfer(from, to, tokenId, _data);
     }
 
     function burn(uint256 tokenId)
