@@ -5,14 +5,13 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "./ERC721ApprovalNotSupported.sol";
 import "./ERC721BaseURI.sol";
 import "./ERC721Burnable.sol";
 import "./ERC721Mintable.sol";
 import "./ERC721Pausable.sol";
 
-error NotSupported();
-
-contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable {
+contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC271ApprovalNotSupported, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable {
     bytes32 public constant TRANSFERRER_ROLE = keccak256("TRANSFERRER_ROLE");
 
     function __HomeOwnershipToken_init(
@@ -74,31 +73,6 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
         _safeTransfer(from, to, tokenId, _data);
     }
 
-    // The following functions make approval functions not supported
-
-    function approve(address to, uint256 tokenId) public virtual override(ERC721Upgradeable, IERC721Upgradeable) {
-        to;
-        tokenId;
-        revert NotSupported();
-    }
-
-    function getApproved(uint256 tokenId) public view virtual override(ERC721Upgradeable, IERC721Upgradeable) returns (address) {
-        tokenId;
-        revert NotSupported();
-    }
-
-    function isApprovedForAll(address owner, address operator) public view virtual override(ERC721Upgradeable, IERC721Upgradeable) returns (bool) {
-        owner;
-        operator;
-        revert NotSupported();
-    }
-
-    function setApprovalForAll(address operator, bool approved) public virtual override(ERC721Upgradeable, IERC721Upgradeable) {
-        operator;
-        approved;
-        revert NotSupported();
-    }
-
     // The following functions are overrides required by Solidity.
 
     function supportsInterface(bytes4 interfaceId)
@@ -108,6 +82,38 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
+    }
+
+    function approve(address to, uint256 tokenId)
+        public
+        override(ERC271ApprovalNotSupported, ERC721Upgradeable, IERC721Upgradeable)
+    {
+        return super.approve(to, tokenId);
+    }
+
+    function getApproved(uint256 tokenId)
+        public
+        view
+        override(ERC271ApprovalNotSupported, ERC721Upgradeable, IERC721Upgradeable)
+        returns (address)
+    {
+        return super.getApproved(tokenId);
+    }
+
+    function isApprovedForAll(address owner, address operator)
+        public
+        view
+        override(ERC271ApprovalNotSupported, ERC721Upgradeable, IERC721Upgradeable)
+        returns (bool)
+    {
+        return super.isApprovedForAll(owner, operator);
+    }
+
+    function setApprovalForAll(address operator, bool approved)
+        public
+        override(ERC271ApprovalNotSupported, ERC721Upgradeable, IERC721Upgradeable)
+    {
+        return super.setApprovalForAll(operator, approved);
     }
 
     function _baseURI()
