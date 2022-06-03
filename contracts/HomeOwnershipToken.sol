@@ -5,12 +5,12 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "./ERC721ApprovalNotSupported.sol";
-import "./ERC721BaseURI.sol";
-import "./ERC721Burnable.sol";
-import "./ERC721Mintable.sol";
-import "./ERC721Pausable.sol";
-import "./ERC721TransferrerOnly.sol";
+import "./extensions/ERC721ApprovalNotSupported.sol";
+import "./extensions/ERC721BaseURI.sol";
+import "./extensions/ERC721Burnable.sol";
+import "./extensions/ERC721Mintable.sol";
+import "./extensions/ERC721Pausable.sol";
+import "./extensions/ERC721TransferrerOnly.sol";
 
 contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC271ApprovalNotSupported, ERC721TransferrerOnly, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable {
     function __HomeOwnershipToken_init(
