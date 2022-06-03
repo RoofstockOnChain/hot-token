@@ -8,7 +8,7 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 abstract contract ERC721Burnable is Initializable, ERC721Upgradeable, AccessControlUpgradeable {
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
 
-    function __Burnable_init() internal onlyInitializing {
+    function __ERC721Burnable_init() internal onlyInitializing {
         _grantRole(BURNER_ROLE, msg.sender);
     }
 
@@ -18,7 +18,6 @@ abstract contract ERC721Burnable is Initializable, ERC721Upgradeable, AccessCont
         onlyRole(BURNER_ROLE)
     {
         //solhint-disable-next-line max-line-length
-        require(_isApprovedOrOwner(_msgSender(), tokenId), "ERC721Burnable: caller is not owner nor approved");
         _burn(tokenId);
     }
 
