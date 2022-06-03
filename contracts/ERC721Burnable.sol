@@ -17,7 +17,6 @@ abstract contract ERC721Burnable is Initializable, ERC721Upgradeable, AccessCont
         virtual
         onlyRole(BURNER_ROLE)
     {
-        //solhint-disable-next-line max-line-length
         _burn(tokenId);
     }
 
