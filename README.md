@@ -18,13 +18,13 @@ The contract is a modified ERC-721 contract using the[Open Zepplin](https://www.
 
 ## Features
 
-- ERC721 Standard (Modified) - The Home Ownership Token contract should be a standard ERC721 contract with some modifications. The modifications are:
-  - Transferrer Role Only - Only addresses with the TRANSFERRER_ROLE can transfer the token. The owner of the token cannot transfer it.
-  - Approved not supported - Approval functions grant access for a third-party to transfer tokens. This contract does not support these functions.
-- Base URI - Admins can set the Base URI.
-- Burnable - Addresses with the BURNER_ROLE can burn tokens.
-- Mintable - Addresses with the MINT_ROLE can mint tokens.
-- Pausable - Addresses with the PAUSE_ROLE can pause tokens.
+- [ ] ERC721 Standard (Modified) - The Home Ownership Token contract should be a standard ERC721 contract with some modifications. The modifications are:
+  - [ ] Transferrer Role Only - Only addresses with the TRANSFERRER_ROLE can transfer the token. The owner of the token cannot transfer it.
+  - [ ] Approved not supported - Approval functions grant access for a third-party to transfer tokens. This contract does not support these functions.
+- [x] Base URI - Admins can set the Base URI.
+- [x] Burnable - Addresses with the BURNER_ROLE can burn tokens.
+- [x] Mintable - Addresses with the MINT_ROLE can mint tokens.
+- [x] Pausable - Addresses with the PAUSE_ROLE can pause tokens.
 
 ## Deploy
 
