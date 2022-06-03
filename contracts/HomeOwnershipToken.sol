@@ -5,25 +5,23 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import "./ERC721BaseURI.sol";
 import "./ERC721Burnable.sol";
 import "./ERC721Mintable.sol";
 import "./ERC721Pausable.sol";
 
 error NotSupported();
 
-contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721Mintable, ERC721Pausable, ERC721Burnable {
+contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable {
     bytes32 public constant TRANSFERRER_ROLE = keccak256("TRANSFERRER_ROLE");
-
-    string private _baseTokenURI;
 
     function __HomeOwnershipToken_init(
         string memory name,
         string memory symbol,
         string memory baseTokenURI
     ) internal onlyInitializing {
-        _baseTokenURI = baseTokenURI;
-
         __ERC721_init(name, symbol);
+        __ERC721BaseURI_init(baseTokenURI);
         __ERC721Enumerable_init();
         __AccessControl_init();
         __ERC721Mintable_init();
@@ -32,16 +30,6 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
 
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(TRANSFERRER_ROLE, msg.sender);
-    }
-
-    // The following functions allow you to get and set the Base URI
-
-    function _baseURI() internal view virtual override returns (string memory) {
-        return _baseTokenURI;
-    }
-
-    function setBaseURI(string memory baseTokenURI) public onlyRole(DEFAULT_ADMIN_ROLE) {
-        _baseTokenURI = baseTokenURI;
     }
 
     // The following functions make it so only Transferrers can do transfers
@@ -113,20 +101,29 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
 
     // The following functions are overrides required by Solidity.
 
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        override(ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable)
+        returns (bool)
+    {
+        return super.supportsInterface(interfaceId);
+    }
+
+    function _baseURI()
+        internal
+        view
+        override(ERC721BaseURI, ERC721Upgradeable)
+        returns (string memory)
+    {
+        return super._baseURI();
+    }
+
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
         internal
         whenNotPaused
         override(ERC721Upgradeable, ERC721EnumerableUpgradeable)
     {
         super._beforeTokenTransfer(from, to, tokenId);
-    }
-
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override(ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721Mintable, ERC721Pausable, ERC721Burnable)
-        returns (bool)
-    {
-        return super.supportsInterface(interfaceId);
     }
 }
