@@ -10,10 +10,9 @@ import "./ERC721BaseURI.sol";
 import "./ERC721Burnable.sol";
 import "./ERC721Mintable.sol";
 import "./ERC721Pausable.sol";
+import "./ERC721TransferrerOnly.sol";
 
-contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC271ApprovalNotSupported, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable {
-    bytes32 public constant TRANSFERRER_ROLE = keccak256("TRANSFERRER_ROLE");
-
+contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC271ApprovalNotSupported, ERC721TransferrerOnly, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable {
     function __HomeOwnershipToken_init(
         string memory name,
         string memory symbol,
@@ -23,54 +22,12 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
         __ERC721BaseURI_init(baseTokenURI);
         __ERC721Enumerable_init();
         __AccessControl_init();
+        __ERC721TransferrerOnly_init();
         __ERC721Mintable_init();
         __ERC721Pausable_init();
         __ERC721Burnable_init();
 
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(TRANSFERRER_ROLE, msg.sender);
-    }
-
-    // The following functions make it so only Transferrers can do transfers
-
-    function transferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    )
-        public
-        virtual
-        override(ERC721Upgradeable, IERC721Upgradeable)
-        onlyRole(TRANSFERRER_ROLE)
-    {
-        _transfer(from, to, tokenId);
-    }
-
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId
-    )
-        public
-        virtual
-        override(ERC721Upgradeable, IERC721Upgradeable)
-        onlyRole(TRANSFERRER_ROLE)
-    {
-        safeTransferFrom(from, to, tokenId, "");
-    }
-
-    function safeTransferFrom(
-        address from,
-        address to,
-        uint256 tokenId,
-        bytes memory _data
-    )
-        public
-        virtual
-        override(ERC721Upgradeable, IERC721Upgradeable)
-        onlyRole(TRANSFERRER_ROLE)
-    {
-        _safeTransfer(from, to, tokenId, _data);
     }
 
     // The following functions are overrides required by Solidity.
@@ -78,10 +35,34 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable)
+        override(ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721TransferrerOnly, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
+    }
+
+    function transferFrom(address from, address to, uint256 tokenId)
+        public
+        override(ERC721TransferrerOnly, ERC721Upgradeable, IERC721Upgradeable)
+        onlyRole(TRANSFERRER_ROLE)
+    {
+        super.transferFrom(from, to, tokenId);
+    }
+
+    function safeTransferFrom(address from, address to, uint256 tokenId)
+        public
+        override(ERC721TransferrerOnly, ERC721Upgradeable, IERC721Upgradeable)
+        onlyRole(TRANSFERRER_ROLE)
+    {
+        super.safeTransferFrom(from, to, tokenId);
+    }
+
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data)
+        public
+        override(ERC721TransferrerOnly, ERC721Upgradeable, IERC721Upgradeable)
+        onlyRole(TRANSFERRER_ROLE)
+    {
+        return super.safeTransferFrom(from, to, tokenId, _data);
     }
 
     function approve(address to, uint256 tokenId)
