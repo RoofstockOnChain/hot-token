@@ -2,29 +2,21 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
-abstract contract ERC721TransferrerOnly is Initializable, ERC721Upgradeable, AccessControlUpgradeable {
-    bytes32 public constant TRANSFERRER_ROLE = keccak256("TRANSFERRER_ROLE");
-
-    function __ERC721TransferrerOnly_init() internal onlyInitializing {
-        _grantRole(TRANSFERRER_ROLE, msg.sender);
-    }
-
-    function transferFrom(address from, address to, uint256 tokenId) public virtual override(ERC721Upgradeable) {
-        _checkRole(TRANSFERRER_ROLE);
+abstract contract ERC721TransferrerOnly is ERC721Upgradeable {
+    function transferFrom(address from, address to, uint256 tokenId) public virtual override {
+        require(_isApproved(_msgSender(), tokenId), "ERC721: transfer caller is not approved");
         _transfer(from, to, tokenId);
     }
 
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public virtual override(ERC721Upgradeable) {
-        _checkRole(TRANSFERRER_ROLE);
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public virtual override {
+        require(_isApproved(_msgSender(), tokenId), "ERC721: transfer caller is not approved");
         _safeTransfer(from, to, tokenId, _data);
     }
 
-    // The following functions are overrides required by Solidity.
-
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721Upgradeable, AccessControlUpgradeable) returns (bool) {
-        return super.supportsInterface(interfaceId);
+    function _isApproved(address spender, uint256 tokenId) internal view virtual returns (bool) {
+        require(_exists(tokenId), "ERC721: operator query for nonexistent token");
+        address owner = ERC721Upgradeable.ownerOf(tokenId);
+        return (isApprovedForAll(owner, spender) || getApproved(tokenId) == spender);
     }
 }

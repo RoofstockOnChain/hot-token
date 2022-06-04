@@ -5,14 +5,14 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
-import "./extensions/ERC721ApprovalNotSupported.sol";
+import "./extensions/ERC721AdminApprovalGrantorOnly.sol";
 import "./extensions/ERC721BaseURI.sol";
 import "./extensions/ERC721Burnable.sol";
 import "./extensions/ERC721Mintable.sol";
 import "./extensions/ERC721Pausable.sol";
 import "./extensions/ERC721TransferrerOnly.sol";
 
-contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC271ApprovalNotSupported, ERC721TransferrerOnly, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable {
+contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721AdminApprovalGrantorOnly, ERC721TransferrerOnly, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable {
     function __HomeOwnershipToken_init(
         string memory name,
         string memory symbol,
@@ -22,7 +22,6 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
         __ERC721BaseURI_init(baseTokenURI);
         __ERC721Enumerable_init();
         __AccessControl_init();
-        __ERC721TransferrerOnly_init();
         __ERC721Mintable_init();
         __ERC721Pausable_init();
         __ERC721Burnable_init();
@@ -35,7 +34,7 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721TransferrerOnly, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable)
+        override(ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721AdminApprovalGrantorOnly, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
@@ -44,7 +43,6 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
     function transferFrom(address from, address to, uint256 tokenId)
         public
         override(ERC721TransferrerOnly, ERC721Upgradeable, IERC721Upgradeable)
-        onlyRole(TRANSFERRER_ROLE)
     {
         super.transferFrom(from, to, tokenId);
     }
@@ -52,41 +50,49 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
     function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data)
         public
         override(ERC721TransferrerOnly, ERC721Upgradeable, IERC721Upgradeable)
-        onlyRole(TRANSFERRER_ROLE)
     {
-        return super.safeTransferFrom(from, to, tokenId, _data);
+        super.safeTransferFrom(from, to, tokenId, _data);
     }
 
     function approve(address to, uint256 tokenId)
         public
-        override(ERC271ApprovalNotSupported, ERC721Upgradeable, IERC721Upgradeable)
+        override(ERC721AdminApprovalGrantorOnly, ERC721Upgradeable, IERC721Upgradeable)
     {
-        return super.approve(to, tokenId);
+        super.approve(to, tokenId);
     }
 
-    function getApproved(uint256 tokenId)
+    function setApprovalForAll(address operator, bool approved)
         public
-        view
-        override(ERC271ApprovalNotSupported, ERC721Upgradeable, IERC721Upgradeable)
-        returns (address)
+        override(ERC721AdminApprovalGrantorOnly, ERC721Upgradeable, IERC721Upgradeable)
     {
-        return super.getApproved(tokenId);
+        return super.setApprovalForAll(operator, approved);
     }
 
     function isApprovedForAll(address owner, address operator)
         public
         view
-        override(ERC271ApprovalNotSupported, ERC721Upgradeable, IERC721Upgradeable)
+        override(ERC721AdminApprovalGrantorOnly, ERC721Upgradeable, IERC721Upgradeable)
         returns (bool)
     {
         return super.isApprovedForAll(owner, operator);
     }
 
-    function setApprovalForAll(address operator, bool approved)
-        public
-        override(ERC271ApprovalNotSupported, ERC721Upgradeable, IERC721Upgradeable)
+    function _approve(address to, uint256 tokenId)
+        internal
+        override(ERC721AdminApprovalGrantorOnly, ERC721Upgradeable)
     {
-        return super.setApprovalForAll(operator, approved);
+        super._approve(to, tokenId);
+    }
+
+    function _setApprovalForAll(
+        address owner,
+        address operator,
+        bool approved
+    )
+        internal 
+        override(ERC721AdminApprovalGrantorOnly, ERC721Upgradeable)
+    {
+        super._setApprovalForAll(owner, operator, approved);
     }
 
     function _baseURI()
