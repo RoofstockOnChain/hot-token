@@ -17,7 +17,7 @@ abstract contract ERC721Mintable is Initializable, ERC721Upgradeable, AccessCont
         _grantRole(MINTER_ROLE, msg.sender);
     }
 
-    function safeMint(address to) public onlyRole(MINTER_ROLE) {
+    function mint(address to) public onlyRole(MINTER_ROLE) {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
