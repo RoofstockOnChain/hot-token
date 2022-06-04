@@ -12,11 +12,13 @@ abstract contract ERC721TransferrerOnly is Initializable, ERC721Upgradeable, Acc
         _grantRole(TRANSFERRER_ROLE, msg.sender);
     }
 
-    function transferFrom(address from, address to, uint256 tokenId) public virtual override(ERC721Upgradeable) onlyRole(TRANSFERRER_ROLE) {
+    function transferFrom(address from, address to, uint256 tokenId) public virtual override(ERC721Upgradeable) {
+        _checkRole(TRANSFERRER_ROLE);
         _transfer(from, to, tokenId);
     }
 
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public virtual override(ERC721Upgradeable) onlyRole(TRANSFERRER_ROLE) {
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data) public virtual override(ERC721Upgradeable) {
+        _checkRole(TRANSFERRER_ROLE);
         _safeTransfer(from, to, tokenId, _data);
     }
 
