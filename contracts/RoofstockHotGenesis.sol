@@ -9,7 +9,7 @@ contract RoofstockHotGenesis is HomeOwnershipToken {
         __HomeOwnershipToken_init(
             "Roofstock - Home Ownership Token - Genesis",
             "RHOTG",
-            "https://www.roofstockonchain.com/metadata/"
+            "https://onchain.roofstock.com/metadata/"
         );
     }
 }
