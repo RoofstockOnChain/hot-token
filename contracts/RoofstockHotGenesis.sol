@@ -3,7 +3,7 @@ pragma solidity ^0.8.4;
 
 import "./HomeOwnershipToken.sol";
 
-/// @custom:security-contact security@roofstockonchain.com
+/// @custom:security-contact security@roofstock.com
 contract RoofstockHotGenesis is HomeOwnershipToken {
     function initialize() initializer public {
         __HomeOwnershipToken_init(

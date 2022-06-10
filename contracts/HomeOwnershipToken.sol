@@ -12,7 +12,7 @@ import "./extensions/ERC721Mintable.sol";
 import "./extensions/ERC721Pausable.sol";
 import "./extensions/ERC721TransferrerOnly.sol";
 
-contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC271ApprovalNotSupported, ERC721TransferrerOnly, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable {
+abstract contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC271ApprovalNotSupported, ERC721TransferrerOnly, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable {
     function __HomeOwnershipToken_init(
         string memory name,
         string memory symbol,
@@ -44,7 +44,6 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
     function transferFrom(address from, address to, uint256 tokenId)
         public
         override(ERC721TransferrerOnly, ERC721Upgradeable, IERC721Upgradeable)
-        onlyRole(TRANSFERRER_ROLE)
     {
         super.transferFrom(from, to, tokenId);
     }
@@ -52,7 +51,6 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
     function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory _data)
         public
         override(ERC721TransferrerOnly, ERC721Upgradeable, IERC721Upgradeable)
-        onlyRole(TRANSFERRER_ROLE)
     {
         return super.safeTransferFrom(from, to, tokenId, _data);
     }
@@ -100,8 +98,7 @@ contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721Enumerabl
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
         internal
-        whenNotPaused
-        override(ERC721Upgradeable, ERC721EnumerableUpgradeable)
+        override(ERC721Pausable, ERC721Upgradeable, ERC721EnumerableUpgradeable)
     {
         super._beforeTokenTransfer(from, to, tokenId);
     }
