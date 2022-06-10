@@ -13,11 +13,17 @@ abstract contract ERC721Mintable is Initializable, ERC721Upgradeable, AccessCont
 
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
-    function __ERC721Mintable_init() internal onlyInitializing {
+    function __ERC721Mintable_init()
+        internal
+        onlyInitializing
+    {
         _grantRole(MINTER_ROLE, msg.sender);
     }
 
-    function mint(address to) public onlyRole(MINTER_ROLE) {
+    function mint(address to)
+        public
+        onlyRole(MINTER_ROLE)
+    {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
@@ -25,7 +31,13 @@ abstract contract ERC721Mintable is Initializable, ERC721Upgradeable, AccessCont
 
     // The following functions are overrides required by Solidity.
 
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721Upgradeable, AccessControlUpgradeable) returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(ERC721Upgradeable, AccessControlUpgradeable)
+        returns (bool)
+    {
         return super.supportsInterface(interfaceId);
     }
 }

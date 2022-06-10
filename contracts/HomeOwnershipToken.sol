@@ -17,7 +17,10 @@ abstract contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721
         string memory name,
         string memory symbol,
         string memory baseTokenURI
-    ) internal onlyInitializing {
+    )
+        internal
+        onlyInitializing
+    {
         __ERC721_init(name, symbol);
         __ERC721BaseURI_init(baseTokenURI);
         __ERC721Enumerable_init();

@@ -8,7 +8,10 @@ import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol"
 abstract contract ERC721Burnable is Initializable, ERC721Upgradeable, AccessControlUpgradeable {
     bytes32 public constant BURNER_ROLE = keccak256("BURNER_ROLE");
 
-    function __ERC721Burnable_init() internal onlyInitializing {
+    function __ERC721Burnable_init()
+        internal
+        onlyInitializing
+    {
         _grantRole(BURNER_ROLE, msg.sender);
     }
 
@@ -22,7 +25,13 @@ abstract contract ERC721Burnable is Initializable, ERC721Upgradeable, AccessCont
 
     // The following functions are overrides required by Solidity.
 
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721Upgradeable, AccessControlUpgradeable) returns (bool) {
+    function supportsInterface(bytes4 interfaceId)
+        public
+        view
+        virtual
+        override(ERC721Upgradeable, AccessControlUpgradeable)
+        returns (bool)
+    {
         return super.supportsInterface(interfaceId);
     }
 }
