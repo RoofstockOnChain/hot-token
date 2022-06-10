@@ -9,10 +9,9 @@ import "./extensions/ERC721ApprovalNotSupported.sol";
 import "./extensions/ERC721BaseURI.sol";
 import "./extensions/ERC721Burnable.sol";
 import "./extensions/ERC721Mintable.sol";
-import "./extensions/ERC721Pausable.sol";
 import "./extensions/ERC721TransferrerOnly.sol";
 
-abstract contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC271ApprovalNotSupported, ERC721TransferrerOnly, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable {
+abstract contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC271ApprovalNotSupported, ERC721TransferrerOnly, ERC721BaseURI, ERC721Mintable, ERC721Burnable {
     function __HomeOwnershipToken_init(
         string memory name,
         string memory symbol,
@@ -27,7 +26,6 @@ abstract contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721
         __AccessControl_init();
         __ERC721TransferrerOnly_init();
         __ERC721Mintable_init();
-        __ERC721Pausable_init();
         __ERC721Burnable_init();
 
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
@@ -38,7 +36,7 @@ abstract contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721TransferrerOnly, ERC721BaseURI, ERC721Mintable, ERC721Pausable, ERC721Burnable)
+        override(ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC721TransferrerOnly, ERC721BaseURI, ERC721Mintable, ERC721Burnable)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
@@ -101,7 +99,7 @@ abstract contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId)
         internal
-        override(ERC721Pausable, ERC721Upgradeable, ERC721EnumerableUpgradeable)
+        override(ERC721Upgradeable, ERC721EnumerableUpgradeable)
     {
         super._beforeTokenTransfer(from, to, tokenId);
     }
