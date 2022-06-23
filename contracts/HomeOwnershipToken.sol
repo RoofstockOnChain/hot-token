@@ -11,17 +11,16 @@ import "./extensions/ERC721Burnable.sol";
 import "./extensions/ERC721Mintable.sol";
 import "./extensions/ERC721TransferrerOnly.sol";
 
-abstract contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC271ApprovalNotSupported, ERC721TransferrerOnly, ERC721BaseURI, ERC721Mintable, ERC721Burnable {
-    function __HomeOwnershipToken_init(
-        string memory name,
-        string memory symbol,
-        string memory baseTokenURI
-    )
+/// @title A non-fungible token that represents ownership of a home.
+/// @dev This contract only overrides required functions from inherited extensions.
+/// @custom:documentation https://roofstock-onchain.gitbook.io/roofstock-ideas/v1/home-ownership-token-genesis
+contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC271ApprovalNotSupported, ERC721TransferrerOnly, ERC721BaseURI, ERC721Mintable, ERC721Burnable {
+    function __HomeOwnershipToken_init()
         internal
         onlyInitializing
     {
-        __ERC721_init(name, symbol);
-        __ERC721BaseURI_init(baseTokenURI);
+        __ERC721_init("Home Ownership Token", "HOT");
+        __ERC721BaseURI_init("https://onchain.roofstock.com/metadata/");
         __ERC721Enumerable_init();
         __AccessControl_init();
         __ERC721TransferrerOnly_init();

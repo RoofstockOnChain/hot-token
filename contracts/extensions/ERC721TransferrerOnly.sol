@@ -5,6 +5,9 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
+/// @title Override the standard ERC721 transfer functions so that they only work for a transferrer role.
+/// @dev Checks that the caller is the transferrer role before transferring.
+/// @custom:documentation https://roofstock-onchain.gitbook.io/roofstock-ideas/v1/home-ownership-token-genesis#transferrer-role-only
 abstract contract ERC721TransferrerOnly is Initializable, ERC721Upgradeable, AccessControlUpgradeable {
     bytes32 public constant TRANSFERRER_ROLE = keccak256("TRANSFERRER_ROLE");
 

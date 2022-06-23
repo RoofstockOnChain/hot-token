@@ -5,6 +5,9 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 
 error NotSupported();
 
+/// @title Override the standard ERC721 approval functions so that they are not supported.
+/// @dev Throws the NotSupported error and reverts when any of these functions are called.
+/// @custom:documentation https://roofstock-onchain.gitbook.io/roofstock-ideas/v1/home-ownership-token-genesis#approval-not-supported
 abstract contract ERC271ApprovalNotSupported is ERC721Upgradeable {
     function approve(address to, uint256 tokenId)
         public

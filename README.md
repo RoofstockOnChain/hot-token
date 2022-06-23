@@ -14,7 +14,7 @@ The contract is a modified ERC-721 contract using the[Open Zepplin](https://www.
 - `migrate:dashboard` - If the Truffle Dashboard is running, it deploys the contract via the dashboard.
 - `test` - Runs the truffle tests.
 - `dashboard` - Runs the Truffle Dashboard.
-- `verify:roofstock-hot-genesis:rinkeby` - Verifies the RoofstockHotGenesis contract on rinkeby.etherscan.io.
+- `verify:home-ownership-token:rinkeby` - Verifies the HomeOwnershipToken contract on rinkeby.etherscan.io.
 
 ## Features
 
