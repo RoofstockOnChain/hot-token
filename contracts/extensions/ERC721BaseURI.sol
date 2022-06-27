@@ -5,6 +5,9 @@ import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 
+/// @title Add base uri functionality for the metadata endpoint.
+/// @dev Implements a getter and setter for the base uri.
+/// @custom:documentation https://roofstock-onchain.gitbook.io/roofstock-ideas/v1/home-ownership-token-genesis#base-uri
 abstract contract ERC721BaseURI is Initializable, ERC721Upgradeable, AccessControlUpgradeable {
     string private _baseTokenURI;
 

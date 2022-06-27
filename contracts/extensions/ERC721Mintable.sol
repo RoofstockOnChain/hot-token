@@ -6,6 +6,9 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 
+/// @title Expose mint function on the standard ERC721 contract.
+/// @dev Creates a public mint function that wraps the _safeMint function that can only be called by the minter role.
+/// @custom:documentation https://roofstock-onchain.gitbook.io/roofstock-ideas/v1/home-ownership-token-genesis#mintable
 abstract contract ERC721Mintable is Initializable, ERC721Upgradeable, AccessControlUpgradeable {
     using CountersUpgradeable for CountersUpgradeable.Counter;
 
