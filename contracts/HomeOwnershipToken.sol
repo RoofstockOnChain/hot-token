@@ -15,9 +15,9 @@ import "./extensions/ERC721TransferrerOnly.sol";
 /// @dev This contract only overrides required functions from inherited extensions.
 /// @custom:documentation https://roofstock-onchain.gitbook.io/roofstock-ideas/v1/home-ownership-token-genesis
 contract HomeOwnershipToken is Initializable, ERC721Upgradeable, ERC721EnumerableUpgradeable, AccessControlUpgradeable, ERC271ApprovalNotSupported, ERC721TransferrerOnly, ERC721BaseURI, ERC721Mintable, ERC721Burnable {
-    function __HomeOwnershipToken_init()
-        internal
-        onlyInitializing
+    function initialize()
+        initializer
+        public
     {
         __ERC721_init("Home Ownership Token", "HOT");
         __ERC721BaseURI_init("https://onchain.roofstock.com/metadata/");
