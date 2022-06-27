@@ -24,7 +24,6 @@ The contract is a modified ERC-721 contract using the[Open Zepplin](https://www.
 - [x] Base URI - Admins can set the Base URI.
 - [x] Burnable - Addresses with the BURNER_ROLE can burn tokens.
 - [x] Mintable - Addresses with the MINT_ROLE can mint tokens.
-- [x] Pausable - Addresses with the PAUSE_ROLE can pause tokens.
 
 ## Deploy
 
