@@ -11,7 +11,8 @@
     "migrate:dashboard": "truffle migrate --network dashboard",
     "test": "truffle test",
     "dashboard": "truffle dashboard",
-    "verify:home-ownership-token:rinkeby": "truffle run verify HomeOwnershipToken --network rinkeby"
+    "verify:home-ownership-token:rinkeby": "truffle run verify HomeOwnershipToken --network rinkeby",
+    "verify:home-ownership-token:mainnet": "truffle run verify HomeOwnershipToken --network mainnet"
   },
   "repository": {
     "type": "git",
